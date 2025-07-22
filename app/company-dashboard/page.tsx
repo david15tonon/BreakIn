@@ -1,38 +1,40 @@
 "use client"
 
-import { useState } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Progress } from "@/components/ui/progress"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
+import { Progress } from "@/components/ui/progress"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
+import { Switch } from "@/components/ui/switch"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Textarea } from "@/components/ui/textarea"
 import {
-  Building2,
-  Users,
-  Target,
-  Zap,
-  Bell,
-  Search,
-  Filter,
-  Star,
-  Eye,
-  MessageSquare,
-  BarChart3,
-  Plus,
-  Download,
-  Play,
-  Bookmark,
-  Send,
+    BarChart3,
+    Bell,
+    Bookmark,
+    Download,
+    Eye,
+    Filter,
+    MessageSquare,
+    Play,
+    Plus,
+    Search,
+    Send,
+    Star,
+    Target,
+    Users,
+    Zap
 } from "lucide-react"
+import Link from "next/link"
+import { useState } from "react"
 
 export default function CompanyDashboard() {
   const [activeTab, setActiveTab] = useState("overview")
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [selectedDeveloper, setSelectedDeveloper] = useState(null)
 
   const talentRecommendations = [
@@ -137,33 +139,84 @@ export default function CompanyDashboard() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900/95 to-blue-950/80">
-      {/* Navigation */}
-      <nav className="border-b border-white/5 bg-black/60 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <div className="flex-shrink-0 flex items-center">
-                <Building2 className="h-8 w-8 text-blue-400" />
-                <span className="ml-2 text-xl font-bold text-white">TechCorp Dashboard</span>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="sm" className="text-white hover:bg-white/5">
-                <Bell className="h-4 w-4 mr-2" />
-                Notifications
-                <Badge className="ml-2 bg-red-600 text-white">3</Badge>
-              </Button>
-              <Avatar>
-                <AvatarImage src="/placeholder-user.jpg" />
-                <AvatarFallback>TC</AvatarFallback>
-              </Avatar>
-            </div>
+    <div className="min-h-screen flex bg-gradient-to-br from-black via-gray-900/95 to-blue-950/80">
+      {/* Mobile Sidebar Toggle */}
+      <button
+        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded bg-black/70 border border-white/10 text-white focus:outline-none"
+        aria-label="Open sidebar"
+        onClick={() => setSidebarOpen(true)}
+      >
+        <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      {/* Sidebar Navigation */}
+      <nav
+        className={`fixed md:static top-0 left-0 h-full ${sidebarCollapsed ? 'w-20' : 'w-64'} bg-black/60 border-r border-white/5 p-6 flex flex-col justify-between z-40 transition-all duration-300 md:flex`}
+        style={{ minWidth: sidebarCollapsed ? '5rem' : '16rem' }}
+        aria-label="Sidebar"
+      >
+        {/* Collapse/Expand button for desktop */}
+        <div className="hidden md:flex justify-end mb-4">
+          <button
+            className="p-2 rounded bg-black/70 border border-white/10 text-white focus:outline-none"
+            aria-label={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            onClick={() => setSidebarCollapsed((prev) => !prev)}
+          >
+            {sidebarCollapsed ? (
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
+            ) : (
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
+            )}
+          </button>
+        </div>
+        <div className="flex flex-col space-y-2">
+          <div className={`flex items-center mb-8 transition-all duration-300 ${sidebarCollapsed ? 'justify-center' : ''}`}> 
+            <BarChart3 className="h-7 w-7 text-blue-400" />
+            {!sidebarCollapsed && <span className="ml-2 text-xl font-bold text-white">BreakIn Direct</span>}
           </div>
+          {[
+            { label: 'Overview', value: 'overview', icon: <BarChart3 className="h-5 w-5 mr-2" /> },
+            { label: 'Talent Radar', value: 'talent', icon: <Zap className="h-5 w-5 mr-2" /> },
+            { label: 'Squad Hiring', value: 'squads', icon: <Users className="h-5 w-5 mr-2" /> },
+            { label: 'Sponsored Sprints', value: 'sprints', icon: <Play className="h-5 w-5 mr-2" /> },
+            { label: 'Analytics', value: 'analytics', icon: <BarChart3 className="h-5 w-5 mr-2" /> },
+            { label: 'Settings', value: 'settings', icon: <Filter className="h-5 w-5 mr-2" /> },
+          ].map((item) => (
+            <Button
+              key={item.value}
+              variant={activeTab === item.value ? 'secondary' : 'ghost'}
+              className={`justify-start text-white hover:bg-white/5 w-full flex items-center ${activeTab === item.value ? 'bg-blue-600/20 border-l-4 border-blue-400' : ''} ${sidebarCollapsed ? 'justify-center px-0' : ''}`}
+              onClick={() => { setActiveTab(item.value); setSidebarOpen(false); }}
+              style={{ minHeight: '2.5rem' }}
+            >
+              {item.icon}
+              {!sidebarCollapsed && item.label}
+            </Button>
+          ))}
+        </div>
+        <div className={`flex flex-col space-y-2 mt-8 ${sidebarCollapsed ? 'items-center' : ''}`}>
+          <Button variant="ghost" className={`justify-start text-white hover:bg-white/5 w-full flex items-center ${sidebarCollapsed ? 'justify-center px-0' : ''}`} asChild>
+            <Link href="#support"><MessageSquare className="h-5 w-5 mr-2" />{!sidebarCollapsed && 'Support'}</Link>
+          </Button>
+          <Button variant="ghost" className={`justify-start text-white hover:bg-white/5 w-full flex items-center ${sidebarCollapsed ? 'justify-center px-0' : ''}`} asChild>
+            <Link href="#profile"><Avatar className="h-6 w-6 mr-2"><AvatarImage src="/placeholder-user.jpg" /><AvatarFallback>CO</AvatarFallback></Avatar>{!sidebarCollapsed && 'Profile/Logout'}</Link>
+          </Button>
         </div>
       </nav>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Overlay for mobile sidebar */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Sidebar overlay"
+        />
+      )}
+      <main className={`flex-1 p-8 transition-all duration-300 ${sidebarCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-6 bg-black/60 border border-white/5">
             <TabsTrigger
@@ -893,7 +946,7 @@ export default function CompanyDashboard() {
             </div>
           </TabsContent>
         </Tabs>
-      </div>
+      </main>
     </div>
   )
 }

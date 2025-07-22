@@ -22,6 +22,7 @@ import {
   GraduationCap,
   UserCheck,
 } from "lucide-react"
+import Link from "next/link"
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState("developers")
@@ -39,11 +40,20 @@ export default function HomePage() {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              <Button variant="ghost" className="text-white hover:bg-white/5" asChild>
+                <Link href="/developer-dashboard">Developer Dashboard</Link>
+              </Button>
+              <Button variant="ghost" className="text-white hover:bg-white/5" asChild>
+                <Link href="/company-dashboard">Company Dashboard</Link>
+              </Button>
               <Button variant="ghost" className="text-white hover:bg-white/5">
                 How It Works
               </Button>
               <Button variant="ghost" className="text-white hover:bg-white/5">
                 For Companies
+              </Button>
+              <Button variant="ghost" className="text-white hover:bg-white/5" asChild>
+                <Link href="/world-view">World View</Link>
               </Button>
               <Button
                 variant="outline"
