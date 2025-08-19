@@ -5,7 +5,7 @@ import logging
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
-
+from pymongo.database import Database
 # Configuration du logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -61,14 +61,13 @@ def connect_to_mongodb():
         logger.error(f"❌ Erreur inattendue MongoDB: {e}")
         return False
 
-def get_database():
-    """
-    Retourne l'instance de la base de données
-    """
-    global db
-    if db is None:
-        connect_to_mongodb()
-    return db
+
+def get_database() -> Database:
+    MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+    DB_NAME = os.getenv("DB_NAME", "breakin")
+    client = MongoClient(MONGO_URI)
+    return client[DB_NAME]
+        
 
 def close_mongodb_connection():
     """

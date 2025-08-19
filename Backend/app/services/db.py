@@ -1,4 +1,4 @@
-# Service de gestion de la base de données MongoDB
+
 
 import logging
 from typing import Dict, List, Optional, Any
@@ -43,7 +43,7 @@ class DatabaseService:
     
     # === UTILISATEURS ===
     
-    async def create_user(self, user_data: Dict) -> Optional[str]:
+    def create_user(self, user_data: Dict) -> Optional[str]:
         """
         Créer un nouvel utilisateur avec pseudonyme
         """
@@ -62,7 +62,7 @@ class DatabaseService:
             logger.error(f"❌ Erreur création utilisateur: {e}")
             return None
     
-    async def get_user_by_pseudonym(self, pseudonym: str) -> Optional[Dict]:
+    def get_user_by_pseudonym(self, pseudonym: str) -> Optional[Dict]:
         """
         Récupérer un utilisateur par son pseudonyme
         """
@@ -76,7 +76,7 @@ class DatabaseService:
             logger.error(f"❌ Erreur récupération utilisateur: {e}")
             return None
     
-    async def update_user(self, user_id: str, update_data: Dict) -> bool:
+    def update_user(self, user_id: str, update_data: Dict) -> bool:
         """
         Mettre à jour un utilisateur
         """
