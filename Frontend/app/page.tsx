@@ -36,7 +36,7 @@ export default function HomePage() {
             <div className="flex items-center">
               <div className="flex-shrink-0 flex items-center">
                 <Code2 className="h-8 w-8 text-blue-400" />
-                <span className="ml-2 text-xl font-bold text-white">BreakIn Direct</span>
+                <span className="ml-2 text-xl font-bold text-white"><a href="/" >BreakIn Direct</a></span>
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -56,10 +56,11 @@ export default function HomePage() {
                 <Link href="/world-view">World View</Link>
               </Button>
               <Button
+              
                 variant="outline"
                 className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white bg-transparent"
               >
-                Sign In
+                <Link href="/auth/signin">Sign In</Link>
               </Button>
               <Button className="bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
             </div>
@@ -421,7 +422,7 @@ export default function HomePage() {
             <div>
               <div className="flex items-center mb-4">
                 <Code2 className="h-6 w-6 text-blue-400" />
-                <span className="ml-2 text-lg font-bold text-white">BreakIn Direct</span>
+                <span className="ml-2 text-lg font-bold text-white"><a href="/" >BreakIn Direct</a></span>
               </div>
               <p className="text-gray-400">Proof-of-work hiring for the modern world.</p>
             </div>
@@ -454,7 +455,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-white/5 text-center text-gray-400">
-            <p>&copy; 2024 BreakIn Direct. All rights reserved.</p>
+            <p>&copy; 2025 BreakIn Direct. All rights reserved.</p>
           </div>
         </div>
       </footer>
