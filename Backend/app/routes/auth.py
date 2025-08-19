@@ -1,5 +1,3 @@
- # signup / login
- 
 from fastapi import APIRouter
 from app.config import db
 from pydantic import BaseModel
