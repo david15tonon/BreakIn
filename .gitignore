@@ -1,3 +1,4 @@
 .env
-.venv
+venv
+test_mongodb.py
 pyrightconfig.json
