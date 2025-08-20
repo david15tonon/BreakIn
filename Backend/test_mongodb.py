@@ -40,8 +40,8 @@ def test_database_operations():
             logger.error("❌ Base de données non disponible")
             return False
         
-        # Test de ping
-        db.admin.command('ping')
+        # Test de ping - CORRIGÉ
+        db.command('ping')
         logger.info("✅ Ping MongoDB réussi")
         
         # Test d'écriture/lecture

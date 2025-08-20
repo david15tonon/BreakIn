@@ -43,7 +43,7 @@ class DatabaseService:
     
     # === UTILISATEURS ===
     
-    def create_user(self, user_data: Dict) -> Optional[str]:
+    async def create_user(self, user_data: Dict) -> Optional[str]:
         """
         Créer un nouvel utilisateur avec pseudonyme
         """
