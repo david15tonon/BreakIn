@@ -21,25 +21,34 @@ import {
   Building2,
   GraduationCap,
   UserCheck,
+  Menu, // Import Menu icon for the hamburger
+  X, // Import X icon for closing the menu
 } from "lucide-react"
 import Link from "next/link"
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState("developers")
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false) // State for mobile menu
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900/95 to-blue-950/80">
       {/* Navigation */}
       <nav className="border-b border-white/5 bg-black/60 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+          <div className="flex justify-between items-center h-16"> {/* Added items-center for vertical alignment */}
             <div className="flex items-center">
               <div className="flex-shrink-0 flex items-center">
                 <Code2 className="h-8 w-8 text-blue-400" />
                 <span className="ml-2 text-xl font-bold text-white">BreakIn Direct</span>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+
+            {/* Desktop Navigation Links */}
+            <div className="hidden md:flex items-center space-x-4"> {/* Hide on small screens */}
               <Button variant="ghost" className="text-white hover:bg-white/5" asChild>
                 <Link href="/developer-dashboard">Developer Dashboard</Link>
               </Button>
@@ -63,8 +72,44 @@ export default function HomePage() {
               </Button>
               <Button className="bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
             </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden flex items-center"> {/* Show on small screens */}
+              <Button variant="ghost" size="icon" onClick={toggleMobileMenu} className="text-white">
+                {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </Button>
+            </div>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden px-2 pt-2 pb-3 space-y-1 sm:px-3"> {/* Show when mobile menu is open */}
+            <Button variant="ghost" className="text-white hover:bg-white/5 w-full justify-start" asChild>
+                <Link href="/developer-dashboard" onClick={toggleMobileMenu}>Developer Dashboard</Link>
+              </Button>
+              <Button variant="ghost" className="text-white hover:bg-white/5 w-full justify-start" asChild>
+                <Link href="/company-dashboard" onClick={toggleMobileMenu}>Company Dashboard</Link>
+              </Button>
+              <Button variant="ghost" className="text-white hover:bg-white/5 w-full justify-start" onClick={toggleMobileMenu}>
+                How It Works
+              </Button>
+              <Button variant="ghost" className="text-white hover:bg-white/5 w-full justify-start" onClick={toggleMobileMenu}>
+                For Companies
+              </Button>
+              <Button variant="ghost" className="text-white hover:bg-white/5 w-full justify-start" asChild>
+                <Link href="/world-view" onClick={toggleMobileMenu}>World View</Link>
+              </Button>
+              <Button
+                variant="outline"
+                className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white bg-transparent w-full justify-start"
+                onClick={toggleMobileMenu}
+              >
+                Sign In
+              </Button>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full justify-start" onClick={toggleMobileMenu}>Get Started</Button>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
