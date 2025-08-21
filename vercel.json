@@ -10,6 +10,6 @@
     { "handle": "filesystem" },
     { "src": "/.*", "dest": "/Frontend" }
   ],
-  "buildCommand": "cd Frontend && npm install && npm run build",
+  "buildCommand": "npm install && npm run build",
   "outputDirectory": "Frontend/.next"
 }
