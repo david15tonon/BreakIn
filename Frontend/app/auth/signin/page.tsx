@@ -2,22 +2,57 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { BarChart3, Eye, EyeOff, Code2 } from "lucide-react"
+import { Eye, EyeOff, Code2 } from "lucide-react"
 
 export default function SignIn() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
+  const router = useRouter()
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault()
-  setIsLoading(true)
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  setIsLoading(false)
-}
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+    setError("")
+
+    try {
+      const res = await fetch("http://localhost:8000/auth/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      })
+
+      const data = await res.json()
+
+      if (!res.ok) {
+        setError(data.detail || "Invalid credentials")
+        setIsLoading(false)
+        return
+      }
+
+      if (!data.token || typeof data.token !== "string") {
+        setError("Unexpected response format")
+        setIsLoading(false)
+        return
+      }
+
+      localStorage.setItem("token", data.token)
+      router.push("/dashboard")
+    } catch (err) {
+      setError("Network error. Please try again.")
+    }
+
+    setIsLoading(false)
+  }
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-black via-gray-900/95 to-blue-950/80">
@@ -25,8 +60,10 @@ const handleSubmit = async (e: React.FormEvent) => {
         <Card className="w-full max-w-md bg-black/40 border-white/5 backdrop-blur-sm">
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-center mb-4">
-                <Code2 className="h-6 w-6 text-blue-400" />
-              <span className="ml-2 text-2xl font-bold text-white"><a href="/">BreakIn Direct</a></span>
+              <Code2 className="h-6 w-6 text-blue-400" />
+              <span className="ml-2 text-2xl font-bold text-white">
+                <a href="/">BreakIn Direct</a>
+              </span>
             </div>
             <CardTitle className="text-2xl text-white text-center">Sign In</CardTitle>
             <CardDescription className="text-gray-300 text-center">
@@ -37,12 +74,12 @@ const handleSubmit = async (e: React.FormEvent) => {
             <form onSubmit={handleSubmit}>
               <div className="grid gap-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="email" className="text-gray-300">
-                    Email
-                  </Label>
+                  <Label htmlFor="email" className="text-gray-300">Email</Label>
                   <Input
                     id="email"
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="your@email.com"
                     className="bg-black/60 border-white/10 text-white placeholder-gray-400"
                     required
@@ -50,13 +87,8 @@ const handleSubmit = async (e: React.FormEvent) => {
                 </div>
                 <div className="grid gap-2">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="password" className="text-gray-300">
-                      Password
-                    </Label>
-                    <Link
-                      href="/forgot-password"
-                      className="text-sm text-blue-400 hover:text-blue-300"
-                    >
+                    <Label htmlFor="password" className="text-gray-300">Password</Label>
+                    <Link href="/forgot-password" className="text-sm text-blue-400 hover:text-blue-300">
                       Forgot password?
                     </Link>
                   </div>
@@ -64,6 +96,8 @@ const handleSubmit = async (e: React.FormEvent) => {
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       placeholder="Your password"
                       className="bg-black/60 border-white/10 text-white placeholder-gray-400 pr-10"
                       required
@@ -73,16 +107,17 @@ const handleSubmit = async (e: React.FormEvent) => {
                       className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
                       onClick={() => setShowPassword(!showPassword)}
                     >
-                      {showPassword ? (
-                        <EyeOff className="h-4 w-4" />
-                      ) : (
-                        <Eye className="h-4 w-4" />
-                      )}
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                 </div>
-                <Button 
-                  type="submit" 
+
+                {error && (
+                  <div className="text-red-400 text-sm text-center">{error}</div>
+                )}
+
+                <Button
+                  type="submit"
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white"
                   disabled={isLoading}
                 >
