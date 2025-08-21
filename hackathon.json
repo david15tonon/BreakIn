@@ -1,0 +1,124 @@
+{
+  "name": "🚀 Agile Roadmap — GPT-5 Hackathon (5 Days)",
+  "desc": "🎯 Final Objective: Deliver a functional MVP of BreakIn.\nFlow: signup → pseudonym assignment → mission → anonymous feedback → scoring.\nDeliverables: Live demo + GitHub repo + pitch video.",
+  "prefs": {
+    "background": "blue"
+  },
+  "lists": [
+    { "name": "📋 Backlog", "closed": false },
+    { "name": "✅ Day 1 — Kickoff & Setup", "closed": false },
+    { "name": "✅ Day 2 — Backend Core", "closed": false },
+    { "name": "✅ Day 3 — Frontend Core + API Integration", "closed": false },
+    { "name": "✅ Day 4 — AI + Anonymization + Scoring", "closed": false },
+    { "name": "✅ Day 5 — Finalization & Pitch", "closed": false },
+    { "name": "🚀 Done", "closed": false }
+  ],
+  "cards": [
+    {
+      "name": "🎯 Define MVP scope",
+      "idList": "Day 1",
+      "desc": "Keep it simple but impactful"
+    },
+    {
+      "name": "⚙️ Setup GitHub monorepo",
+      "idList": "Day 1",
+      "desc": "Frontend + Backend in one repo"
+    },
+    {
+      "name": "🗄️ Configure MongoDB Atlas + connect FastAPI/Flask",
+      "idList": "Day 1"
+    },
+    {
+      "name": "🔑 Setup GPT-5 API (hackathon key)",
+      "idList": "Day 1"
+    },
+    {
+      "name": "🎨 Quick SquadRoom UI mockups (Figma/Miro)",
+      "idList": "Day 1"
+    },
+    {
+      "name": "👉 Deliverable: Repo structured + UX validated",
+      "idList": "Day 1"
+    },
+
+    {
+      "name": "🛠️ Build FastAPI/Flask API with routes",
+      "idList": "Day 2",
+      "desc": "/signup, /start-sprint, /submit-task, /feedback"
+    },
+    {
+      "name": "📊 Design MongoDB schema",
+      "idList": "Day 2",
+      "desc": "Collections: users, sprints, feedback, scores"
+    },
+    {
+      "name": "👉 Deliverable: Postman-testable API",
+      "idList": "Day 2"
+    },
+
+    {
+      "name": "⚛️ Setup Next.js + Tailwind",
+      "idList": "Day 3"
+    },
+    {
+      "name": "🖥️ Create pages",
+      "idList": "Day 3",
+      "desc": "Login, SquadRoom dashboard, Mission, Feedback display"
+    },
+    {
+      "name": "🔗 Connect frontend ↔ backend (REST API)",
+      "idList": "Day 3"
+    },
+    {
+      "name": "👉 Deliverable: Clickable frontend fully connected",
+      "idList": "Day 3"
+    },
+
+    {
+      "name": "🤖 Integrate GPT-5 for mission + feedback",
+      "idList": "Day 4"
+    },
+    {
+      "name": "🔄 Implement pseudonym rotation (per sprint)",
+      "idList": "Day 4"
+    },
+    {
+      "name": "🏆 Add scoring system (≥85% = revealable)",
+      "idList": "Day 4"
+    },
+    {
+      "name": "✅ End-to-end test flow",
+      "idList": "Day 4",
+      "desc": "signup → mission → submission → feedback → scoring"
+    },
+    {
+      "name": "👉 Deliverable: Functional sprint flow with anonymization",
+      "idList": "Day 4"
+    },
+
+    {
+      "name": "✨ Polish UX (animations, icons)",
+      "idList": "Day 5"
+    },
+    {
+      "name": "📜 Add admin logs (integrity)",
+      "idList": "Day 5"
+    },
+    {
+      "name": "🚀 Deploy (Vercel + Render/Heroku)",
+      "idList": "Day 5"
+    },
+    {
+      "name": "🎥 Record pitch video (2–3 min)",
+      "idList": "Day 5"
+    },
+    {
+      "name": "📑 Prepare slides (vision, tech stack, business angle)",
+      "idList": "Day 5"
+    },
+    {
+      "name": "📦 Submit repo + demo link + slides + video",
+      "idList": "Day 5"
+    }
+  ]
+}

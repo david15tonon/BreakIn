@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "Frontend/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/Frontend/$1" }
+  ],
+  "buildCommand": "cd Frontend && npm install --prefer-offline --no-audit --progress=false && npm run build",
+  "outputDirectory": "Frontend/.next",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "installCommand": "cd Frontend && npm ci --prefer-offline --no-audit --progress=false",
+  "cache": [
+    "~/npm/_logs",
+    "~/npm/_cacache",
+    "~/npm/_preloads",
+    "~/npm/_npx"
+  ]
+}
