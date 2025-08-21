@@ -1,0 +1,9 @@
+// vercel.json
+{
+  "builds": [
+    { "src": "BreakIn/package.json", "use": "@vercel/next" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "BreakIn/$1" }
+  ]
+}
