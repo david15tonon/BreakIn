@@ -2,14 +2,8 @@
   "version": 2,
   "builds": [
     {
-      "src": "BreakIn/package.json",
+      "src": "Frontend/package.json",
       "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/BreakIn/$1"
     }
   ]
 }
