@@ -1,7 +1,18 @@
 {
-  "name": "my-v0-project",
+  "name": "breakin-frontend",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "pnpm@9.x",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@types/react": "^18.2.0",
+      "@types/react-dom": "^18.2.0"
+    }
+  },
   "scripts": {
     "build": "next build",
     "dev": "next dev",
