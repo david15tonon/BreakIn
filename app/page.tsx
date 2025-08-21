@@ -42,9 +42,9 @@ export default function HomePage() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const { data: { user, session } } = await supabase.auth.getUser()
-      setUser(user)
-      setSession(session)
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+      setSession(session);
     }
     fetchUser()
   }, [supabase])
@@ -67,10 +67,23 @@ export default function HomePage() {
 
             {/* Desktop Navigation Links */}
             <div className="hidden md:flex items-center space-x-4"> {/* Hide on small screens */}
+              {user ? (
+                <>
+                  <Avatar>
+                    <AvatarImage src={user.user_metadata?.avatar_url || "/placeholder-user.jpg"} />
+                    <AvatarFallback>
+                      {user.user_metadata?.full_name?.charAt(0) || user.email?.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                  <Button variant="ghost" className="text-white hover:bg-white/5" onClick={async () => {
+                    await supabase.auth.signOut();
+                    router.push('/');
+                  }}>Sign Out</Button>
+                </>
+              ) : (
+                <>
               <Button variant="ghost" className="text-white hover:bg-white/5" asChild>
                 <Link href="/developer-dashboard">Developer Dashboard</Link>
-              </Button>
-              <Button variant="ghost" className="text-white hover:bg-white/5" asChild>
                 <Link href="/company-dashboard">Company Dashboard</Link>
               </Button>
               <Button variant="ghost" className="text-white hover:bg-white/5">
@@ -88,7 +101,9 @@ export default function HomePage() {
               >
                 <Link href="/sign-in"> Sign In </Link>
               </Button>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
+                    <Link href="/sign-up">Get Started</Link></Button>
+                </>)}
             </div>
 
             {/* Mobile Menu Button */}
