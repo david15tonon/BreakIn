@@ -233,14 +233,6 @@ export default function SignUpPage() {
               </TabsContent>
 
               <TabsContent value="register" className="space-y-4">
-                {/* Alert for info */}
-                <Alert className="bg-blue-900/20 border-blue-800">
-                  <Info className="h-4 w-4" />
-                  <AlertTitle>Info</AlertTitle>
-                  <AlertDescription>
-                    Create an account to proceed to the developer onboarding flow
-                  </AlertDescription>
-                </Alert>
 
                 {/* OAuth Buttons for Registration */}
                 <div className="space-y-3">

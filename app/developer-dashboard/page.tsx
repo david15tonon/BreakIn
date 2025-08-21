@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -31,9 +31,27 @@ import {
   Building2,
 } from "lucide-react"
 import Link from "next/link"
+import { createClient } from "@/lib/supabase/client"
+import { User, Session } from "@supabase/supabase-js"
+import { useRouter } from "next/navigation"
 
 export default function DeveloperDashboard() {
   const [activeTab, setActiveTab] = useState("overview")
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [user, setUser] = useState<User | null>(null)
+  const [session, setSession] = useState<Session | null>(null)
+
+  const supabase = createClient()
+  const router = useRouter()
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+      setSession(session);
+    }
+    fetchUser()
+  }, [supabase])
 
   const availableSprints = [
     {
@@ -169,13 +187,42 @@ export default function DeveloperDashboard() {
                 </Button>
                 <div className="flex items-center space-x-2">
                   <div className="text-right">
-                    <div className="text-white font-medium">Alex Developer</div>
-                    <div className="text-gray-400 text-sm">Reputation: {myStats.reputation}</div>
+                  {user ? (
+                    <>
+                      <div className="text-white font-medium">                       
+                        {user.user_metadata?.full_name || user.email?.charAt(0)}
+                      </div>
+                      <div className="text-gray-400 text-sm">
+                        Reputation: {myStats.reputation}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {null}
+                    </>
+                  )}
+
                   </div>
-                  <Avatar>
-                    <AvatarImage src="/placeholder-user.jpg" />
-                    <AvatarFallback>AD</AvatarFallback>
-                  </Avatar>
+                  {user ? (
+                    <>
+                      <Avatar>
+                      <AvatarImage src={user.user_metadata?.avatar_url || "/placeholder-user.jpg"} />
+                      <AvatarFallback>
+                       {user.user_metadata?.full_name?.charAt(0) || user.email?.charAt(0)}
+                      </AvatarFallback>
+                      </Avatar>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        variant="outline"
+                        className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white bg-transparent"
+                        asChild>
+                       <Link href="/sign-in">Sign In</Link>
+                       </Button>
+                    </>
+                  )}
+
                 </div>
               </div>
             </div>
