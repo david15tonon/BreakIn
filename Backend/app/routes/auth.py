@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field, EmailStr
 from app.config import db
 from typing import Optional
@@ -21,7 +22,13 @@ class UserUpdate(BaseModel):
 class UserOut(BaseModel):
     username: str
     email: EmailStr
-    pseudonym: str
+    pseudonym: str# app/routes/auth.py
+class UserSignin(BaseModel):
+    # Changer username -> email
+    email: EmailStr  # ou str si vous préférez
+    password: str
+
+
 
 # 🔐 Signup avec hash du mot de passe
 @router.post("/signup", response_model=UserOut)
@@ -39,6 +46,19 @@ def signup(user: UserSignup):
     }
     db.users.insert_one(new_user)
     return UserOut(**new_user)
+
+@router.post("/signin")
+def signin(credentials: UserSignin):
+    # Chercher par email au lieu de username
+    user = db.users.find_one({"email": credentials.email})
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    # Vérification du mot de passe hashé
+    if not bcrypt.checkpw(credentials.password.encode(), user["password"].encode()):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+
+    return JSONResponse(content={"message": "Signed in successfully", "token": "jwt_token"})
 
 # 🔍 Lecture d’un utilisateur par pseudonyme
 @router.get("/user/{pseudonym}", response_model=UserOut)

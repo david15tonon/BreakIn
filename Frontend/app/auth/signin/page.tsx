@@ -46,7 +46,7 @@ export default function SignIn() {
       }
 
       localStorage.setItem("token", data.token)
-      router.push("/dashboard")
+      router.push("/developer-dashboard")
     } catch (err) {
       setError("Network error. Please try again.")
     }
