@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -26,10 +26,28 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 
+import { createClient } from "@/lib/supabase/client"
+import { User, Session } from "@supabase/supabase-js"
+import { useRouter } from "next/navigation"
+
+
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState("developers")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false) // State for mobile menu
+  const [user, setUser] = useState<User | null>(null)
+  const [session, setSession] = useState<Session | null>(null)
 
+  const supabase = createClient()
+  const router = useRouter()
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user, session } } = await supabase.auth.getUser()
+      setUser(user)
+      setSession(session)
+    }
+    fetchUser()
+  }, [supabase])
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
   }
