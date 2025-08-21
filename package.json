@@ -37,6 +37,10 @@
     "@radix-ui/react-toggle": "latest",
     "@radix-ui/react-toggle-group": "latest",
     "@radix-ui/react-tooltip": "latest",
+    "@react-three/drei": "^10.7.3",
+    "@react-three/fiber": "^9.3.0",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.55.0",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -46,7 +50,11 @@
     "input-otp": "latest",
     "lucide-react": "^0.454.0",
     "motion": "^12.23.12",
+<<<<<<< HEAD
     "next": "15.2.4",
+=======
+    "next": "^15.2.4",
+>>>>>>> 4fd929c832461fa8e6da1dc0bd90b9528177c4a3
     "next-themes": "latest",
     "react": "^19",
     "react-day-picker": "latest",
@@ -57,6 +65,8 @@
     "sonner": "latest",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
+    "three": "^0.179.1",
+    "three-globe": "^2.44.0",
     "vaul": "latest",
     "zod": "^3.24.1"
   },
