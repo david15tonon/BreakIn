@@ -1,5 +1,5 @@
 // lib/api.ts
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://breakin-r2eq.onrender.com/";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://breakin-r2eq.onrender.com";
 
 export interface SignupData {
   username: string;
