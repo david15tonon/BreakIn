@@ -8,12 +8,14 @@ from app.routes.auth import router as auth_router
 
 app = FastAPI(title="BreakIn Backend", version="1.0")
 
-# Load allowed origins from .env
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
-
+# Load allowed origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
+    allow_origins=[
+        "https://breakin-demo.vercel.app",  # vercel demo
+        "http://localhost:3000",            # local dev
+        "http://localhost:3001",           
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
