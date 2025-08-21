@@ -10,5 +10,7 @@
     { "src": "/(.*)", "dest": "/Frontend/$1" }
   ],
   "buildCommand": "cd Frontend && npm install && npm run build",
-  "outputDirectory": "Frontend/.next"
+  "outputDirectory": "Frontend/.next",
+  "framework": "nextjs",
+  "regions": ["iad1"]
 }

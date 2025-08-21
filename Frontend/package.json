@@ -1,7 +1,11 @@
 {
-  "name": "my-v0-project",
+  "name": "breakin-frontend",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "build": "next build",
     "dev": "next dev",
