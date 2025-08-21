@@ -9,7 +9,8 @@
   "routes": [
     { "src": "/(.*)", "dest": "/Frontend/$1" }
   ],
-  "buildCommand": "cd Frontend && rm -rf node_modules && rm -f package-lock.json && npm install && npm run build",
+  "buildCommand": "cd Frontend && npm install && npm run build",
   "outputDirectory": "Frontend/.next",
-  "installCommand": "cd Frontend && npm install"
+  "framework": "nextjs",
+  "regions": ["iad1"]
 }
