@@ -5,5 +5,11 @@
       "src": "Frontend/package.json",
       "use": "@vercel/next"
     }
-  ]
+  ],
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/Frontend" }
+  ],
+  "buildCommand": "cd Frontend && npm install && npm run build",
+  "outputDirectory": "Frontend/.next"
 }
