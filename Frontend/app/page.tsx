@@ -45,8 +45,36 @@ export default function HomePage() {
       setUser(session?.user ?? null);
       setSession(session);
     }
-    fetchUser()
-  }, [supabase])
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+        setSession(session);
+      }
+    );
+
+    fetchUser();
+
+    // Cleanup subscription on unmount
+    return () => subscription.unsubscribe();
+  }, [supabase]);
+
+  const handleSignOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Error signing out:', error);
+      } else {
+        // Clear local state immediately
+        setUser(null);
+        setSession(null);
+        router.push('/');
+      }
+    } catch (error) {
+      console.error('Unexpected error during sign out:', error);
+    }
+  };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -61,7 +89,9 @@ export default function HomePage() {
             <div className="flex items-center">
               <div className="flex-shrink-0 flex items-center">
                 <Code2 className="h-8 w-8 text-blue-400" />
-                <span className="ml-2 text-xl font-bold text-white"><a href="/" >BreakIn Direct</a></span>
+                <span className="ml-2 text-xl font-bold text-white">
+                  <Link href="/">BreakIn Direct</Link>
+                </span>
               </div>
             </div>
 
@@ -91,10 +121,13 @@ export default function HomePage() {
                       {user.user_metadata?.full_name?.charAt(0) || user.email?.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
-                  <Button variant="ghost" className="text-white hover:bg-white/5" onClick={async () => {
-                    await supabase.auth.signOut();
-                    router.push('/');
-                  }}>Sign Out</Button>
+                  <Button 
+                    variant="ghost" 
+                    className="text-white hover:bg-white/5" 
+                    onClick={handleSignOut}
+                  >
+                    Sign Out
+                  </Button>
                 </>
               ) : (
                 <>
@@ -103,15 +136,14 @@ export default function HomePage() {
                     className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white bg-transparent"
                     asChild
                   >
-                    <Link href="/sign-in">Sign In</Link>
+                    <Link href="/auth/sign-in">Sign In</Link>
                   </Button>
                   <Button className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
-                    <Link href="/sign-up">Get Started</Link>
+                    <Link href="/auth/sign-up">Get Started</Link>
                   </Button>
                 </>
               )}
             </div>
-
 
             {/* Mobile Menu Button */}
             <div className="md:hidden flex items-center">
@@ -142,11 +174,16 @@ export default function HomePage() {
             </Button>
             
             {user ? (
-              <Button variant="ghost" className="text-white hover:bg-white/5 w-full justify-start" onClick={async () => {
-                await supabase.auth.signOut();
-                router.push('/');
-                toggleMobileMenu();
-              }}>Sign Out</Button>
+              <Button 
+                variant="ghost" 
+                className="text-white hover:bg-white/5 w-full justify-start" 
+                onClick={async () => {
+                  await handleSignOut();
+                  toggleMobileMenu();
+                }}
+              >
+                Sign Out
+              </Button>
             ) : (
               <>
                 <Button
@@ -154,16 +191,15 @@ export default function HomePage() {
                   className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white bg-transparent w-full justify-start"
                   asChild
                 >
-                  <Link href="/sign-in" onClick={toggleMobileMenu}>Sign In</Link>
+                  <Link href="/auth/sign-in" onClick={toggleMobileMenu}>Sign In</Link>
                 </Button>
                 <Button className="bg-blue-600 hover:bg-blue-700 text-white w-full justify-start" asChild>
-                  <Link href="/sign-up" onClick={toggleMobileMenu}>Get Started</Link>
+                  <Link href="/auth/sign-up" onClick={toggleMobileMenu}>Get Started</Link>
                 </Button>
               </>
             )}
           </div>
         )}
-
       </nav>
 
       {/* Hero Section */}
@@ -520,7 +556,9 @@ export default function HomePage() {
             <div>
               <div className="flex items-center mb-4">
                 <Code2 className="h-6 w-6 text-blue-400" />
-                <span className="ml-2 text-lg font-bold text-white"><a href="/" >BreakIn Direct</a></span>
+                <span className="ml-2 text-lg font-bold text-white">
+                  <Link href="/">BreakIn Direct</Link>
+                </span>
               </div>
               <p className="text-gray-400">Proof-of-work hiring for the modern world.</p>
             </div>
