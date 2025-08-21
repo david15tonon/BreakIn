@@ -7,9 +7,8 @@
     }
   ],
   "routes": [
-    { "handle": "filesystem" },
-    { "src": "/.*", "dest": "/Frontend" }
+    { "src": "/(.*)", "dest": "/Frontend/$1" }
   ],
-  "buildCommand": "npm install && npm run build",
+  "buildCommand": "cd Frontend && npm install && npm run build",
   "outputDirectory": "Frontend/.next"
 }
