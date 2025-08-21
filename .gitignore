@@ -2,4 +2,5 @@
 venv
 .env.local
 test_mongodb.py
+encode_password.py
 pyrightconfig.json
