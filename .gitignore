@@ -1,4 +1,5 @@
 .env
 venv
+.env.local
 test_mongodb.py
 pyrightconfig.json
