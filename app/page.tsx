@@ -68,7 +68,7 @@ export default function HomePage() {
                 variant="outline"
                 className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white bg-transparent"
               >
-                Sign In
+                <Link href="/sign-in"> Sign In </Link>
               </Button>
               <Button className="bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
             </div>
