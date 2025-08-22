@@ -1,90 +1,95 @@
- # config (MongoDB, GPT-5 API key, etc.)
- 
-import os
+def close_mongodb_connection():
+"""Application configuration and helpers.
+
+This module exposes a Settings object (pydantic BaseSettings) and connection helpers
+for MongoDB. Other modules import `db` or call `get_database()` to obtain the
+active database instance.
+"""
+
+from __future__ import annotations
+
 import logging
-from dotenv import load_dotenv
+from typing import List, Optional
+
+from pydantic import BaseSettings, Field, AnyHttpUrl
 from pymongo import MongoClient
-from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError
 from pymongo.database import Database
-# Configuration du logging
-logging.basicConfig(level=logging.INFO)
+
 logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
-load_dotenv()
 
-# Configuration MongoDB
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-DB_NAME = os.getenv("DB_NAME", "breakin")
+class Settings(BaseSettings):
+    # Database
+    MONGO_URI: str = Field("mongodb://localhost:27017", env="MONGO_URI")
+    DB_NAME: str = Field("breakin", env="DB_NAME")
 
-# Configuration de connexion avec options de production
-MONGO_CONFIG = {
-    "serverSelectionTimeoutMS": 5000,  # 5 secondes timeout
-    "connectTimeoutMS": 10000,         # 10 secondes pour se connecter
-    "socketTimeoutMS": 20000,          # 20 secondes pour les opérations
-    "maxPoolSize": 10,                 # Maximum 10 connexions simultanées
-    "retryWrites": True,               # Retry automatique des écritures
-    "w": "majority",                   # Write concern pour la cohérence
-}
+    # Security
+    SECRET_KEY: str = Field("changeme", env="SECRET_KEY")
+    JWT_EXPIRY_MINUTES: int = Field(60 * 24, env="JWT_EXPIRY_MINUTES")
 
-# Initialisation du client MongoDB
-client = None
-db = None
+    # Worker/queue
+    REDIS_URI: Optional[str] = Field(default=None)
+    CELERY_BROKER_URL: str = Field(default="redis://localhost:6379/0")
+    CELERY_RESULT_BACKEND: str = Field(default="redis://localhost:6379/0")
 
-def connect_to_mongodb():
-    """
-    Initialise la connexion à MongoDB avec gestion d'erreurs
+    # CORS
+    ALLOWED_ORIGINS: List[AnyHttpUrl] = Field(default_factory=lambda: ["http://localhost:3000"])
+
+    # Logging
+    LOG_LEVEL: str = Field(default="INFO")
+
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
+
+
+settings = Settings()
+
+# Exposed globals for backward compatibility
+client: Optional[MongoClient] = None
+db: Optional[Database] = None
+
+
+def connect_to_mongodb() -> bool:
+    """Initialize a MongoDB client and verify connectivity.
+
+    Sets module-level `client` and `db` variables on success so other modules can
+    import `from app.config import db`.
     """
     global client, db
-    
     try:
-        logger.info(f"Tentative de connexion à MongoDB: {MONGO_URI}")
-        
-        # Créer le client avec configuration
-        client = MongoClient(MONGO_URI, **MONGO_CONFIG)
-        
-        # Test de connexion
-        client.admin.command('ping')
-        
-        # Sélectionner la base de données
-        db = client[DB_NAME]
-        
-        logger.info(f"✅ Connexion MongoDB réussie sur la base '{DB_NAME}'")
+        logger.info("Connecting to MongoDB: %s", settings.MONGO_URI)
+        client = MongoClient(settings.MONGO_URI, serverSelectionTimeoutMS=5000)
+        # quick ping
+        client.admin.command("ping")
+        db = client[settings.DB_NAME]
+        logger.info("Connected to MongoDB database '%s'", settings.DB_NAME)
         return True
-        
-    except ServerSelectionTimeoutError as e:
-        logger.error(f"❌ Timeout connexion MongoDB: {e}")
-        return False
-    except ConnectionFailure as e:
-        logger.error(f"❌ Échec de connexion MongoDB: {e}")
-        return False
-    except Exception as e:
-        logger.error(f"❌ Erreur inattendue MongoDB: {e}")
+    except Exception as exc:  # pragma: no cover - environment dependent
+        logger.exception("Failed to connect to MongoDB: %s", exc)
+        client = None
+        db = None
         return False
 
 
 def get_database() -> Database:
-    MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-    DB_NAME = os.getenv("DB_NAME", "breakin")
-    client = MongoClient(MONGO_URI)
-    return client[DB_NAME]
-        
+    """Return the active Database instance (connects lazily if needed)."""
+    global client, db
+    if db is None:
+        connect_to_mongodb()
+    if db is None:
+        raise RuntimeError("MongoDB is not available")
+    return db
 
-def close_mongodb_connection():
-    """
-    Ferme proprement la connexion MongoDB
-    """
+
+def close_mongodb_connection() -> None:
     global client
-    if client:
-        client.close()
-        logger.info("🔐 Connexion MongoDB fermée")
+    if client is not None:
+        try:
+            client.close()
+            logger.info("Closed MongoDB connection")
+        except Exception:
+            logger.exception("Error while closing MongoDB connection")
 
-# GPT-5 API key
-GPT_API_KEY = os.getenv("GPT_API_KEY")
 
-# Validation des variables d'environnement critiques
-if not GPT_API_KEY:
-    logger.warning("⚠️ GPT_API_KEY non définie dans les variables d'environnement")
-
-# Initialisation automatique de la connexion
-if not connect_to_mongodb():
-    logger.error("🚨 Impossible de se connecter à MongoDB au démarrage")
