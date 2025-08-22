@@ -117,6 +117,12 @@ export default function HomePage() {
             <div className="md:hidden flex items-center">
               <Button variant="ghost" size="icon" onClick={toggleMobileMenu} className="text-white">
                 {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              <Button
+              
+                variant="outline"
+                className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white bg-transparent"
+              >
+                <Link href="/auth/signin">Sign In</Link>
               </Button>
             </div>
           </div>

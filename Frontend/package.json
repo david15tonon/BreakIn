@@ -1,17 +1,19 @@
 {
-  "name": "my-v0-project",
+  "name": "breakin-frontend",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start",
-    "seed": "tsx scripts/seed-database.ts",
-    "test": "tsx scripts/test-database.ts",
-    "sync-users": "tsx scripts/sync-existing-users.ts"
+    "start": "next start"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "latest",
     "@radix-ui/react-alert-dialog": "latest",
@@ -49,11 +51,9 @@
     "clsx": "^2.1.1",
     "cmdk": "latest",
     "date-fns": "4.1.0",
-    "dotenv": "^17.2.1",
     "embla-carousel-react": "latest",
     "input-otp": "latest",
     "lucide-react": "^0.454.0",
-    "mongodb": "^6.18.0",
     "motion": "^12.23.12",
     "next": "^15.2.4",
     "next-themes": "latest",
@@ -68,7 +68,6 @@
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.179.1",
     "three-globe": "^2.44.0",
-    "tsx": "^4.20.4",
     "vaul": "latest",
     "zod": "^3.24.1"
   },
