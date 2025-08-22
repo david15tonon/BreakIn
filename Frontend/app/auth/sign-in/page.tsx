@@ -93,10 +93,10 @@ export default function SignInPage() {
             <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="login" asChild>
-                  <Link href="/sign-in">Login</Link>
+                  <Link href="/auth/sign-in">Login</Link>
                 </TabsTrigger>
                 <TabsTrigger value="register" asChild>
-                  <Link href="/sign-up">Register</Link>
+                  <Link href="/auth/sign-up">Register</Link>
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="login"></TabsContent>
