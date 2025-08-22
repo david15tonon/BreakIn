@@ -38,6 +38,7 @@ def root():
     return {"message": "Backend BreakIn API running 🚀"}
 
 
+###******************************************************************************
 @app.get("/gpt5")
 def root():
     return {"message": "Welcome to AI Team Evaluator API"}
@@ -50,6 +51,7 @@ def evaluate_team(team_data: dict):
 @app.get("/test")
 def test_eval():
     return evaluate_team_llm(example_team)
+#######**************************************************************************8
 
 #test for logging
 from pydantic import BaseModel, EmailStr
