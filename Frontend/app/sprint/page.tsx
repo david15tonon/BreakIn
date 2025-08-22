@@ -18,6 +18,7 @@ function ProgressBar({ value }: { value: number }) {
   );
 }
 
+
 function StatusDot({ status }: { status: "active" | "review" | "testing" | "idle" }) {
   const color =
     status === "active" ? "bg-emerald-400" :
