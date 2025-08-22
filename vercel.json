@@ -9,26 +9,8 @@
   "routes": [
     { "src": "/(.*)", "dest": "/Frontend/$1" }
   ],
-  "buildCommand": "cd Frontend && npm install --prefer-offline --no-audit --progress=false && npm run build",
+  "buildCommand": "cd Frontend && npm install && npm run build",
   "outputDirectory": "Frontend/.next",
   "framework": "nextjs",
-  "regions": ["iad1"],
-  "installCommand": "cd Frontend && npm ci --prefer-offline --no-audit --progress=false",
-  "env": {
-    "NEXT_PUBLIC_API_URL": "https://breakin-r2eq.onrender.com",
-    "NEXT_PUBLIC_SITE_URL": "https://breakin.vercel.app",
-    "NODE_ENV": "production"
-  },
-  "build": {
-    "env": {
-      "NEXT_PUBLIC_API_URL": "https://breakin-r2eq.onrender.com",
-      "NEXT_PUBLIC_SITE_URL": "https://breakin.vercel.app"
-    }
-  },
-  "crons": [
-    {
-      "path": "/api/cron",
-      "schedule": "0 */12 * * *"
-    }
-  ]
+  "regions": ["iad1"]
 }

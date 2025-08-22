@@ -23,52 +23,31 @@ export default function SignIn() {
     setError("")
 
     try {
-      console.log('Attempting to sign in with:', { email });
-      const res = await fetch("https://breakin-r2eq.onrender.com/auth/signin", {
+      const res = await fetch("http://localhost:8000/auth/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, password }),
-        credentials: 'include' // Important pour les cookies
       })
 
-      console.log('Response status:', res.status);
-      
-      // Essayer de parser la réponse même en cas d'erreur
-      let data;
-      try {
-        data = await res.json();
-        console.log('Response data:', data);
-      } catch (parseError) {
-        console.error('Error parsing response:', parseError);
-        throw new Error('Invalid response from server');
-      }
+      const data = await res.json()
 
       if (!res.ok) {
-        const errorMessage = data?.detail || data?.message || 'Invalid credentials';
-        console.error('Login failed:', errorMessage);
-        setError(errorMessage);
-        setIsLoading(false);
-        return;
+        setError(data.detail || "Invalid credentials")
+        setIsLoading(false)
+        return
       }
 
-      if (!data.token) {
-        console.error('No token in response:', data);
-        setError('Authentication failed: No token received');
-        setIsLoading(false);
-        return;
+      if (!data.token || typeof data.token !== "string") {
+        setError("Unexpected response format")
+        setIsLoading(false)
+        return
       }
 
-      console.log('Login successful, token received');
-      localStorage.setItem("token", data.token);
-      
-      // Rediriger après un court délai pour s'assurer que le token est bien enregistré
-      setTimeout(() => {
-        router.push("/developer-dashboard");
-      }, 100);
+      localStorage.setItem("token", data.token)
+      router.push("/developer-dashboard")
     } catch (err) {
-      console.error('Login error:', err);
       setError("Network error. Please try again.")
     }
 
