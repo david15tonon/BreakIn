@@ -1,1 +1,0 @@
-# schemas MongoDB (users, sprints, feedback)

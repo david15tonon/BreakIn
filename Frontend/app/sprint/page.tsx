@@ -2,9 +2,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { CheckCircleIcon, ClockIcon, RocketLaunchIcon, UserGroupIcon } from "@heroicons/react/24/solid";
 import { XMarkIcon, PlayCircleIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
+
+
 
 // ----- Mini composants UI -----
 function ProgressBar({ value }: { value: number }) {
@@ -17,7 +20,6 @@ function ProgressBar({ value }: { value: number }) {
     </div>
   );
 }
-
 
 function StatusDot({ status }: { status: "active" | "review" | "testing" | "idle" }) {
   const color =
@@ -34,6 +36,33 @@ function Card({ title, children, className = "" }: { title?: string; children: a
         <div className="px-5 pt-5 pb-2 text-sm font-semibold text-slate-200">{title}</div>
       ) : null}
       <div className="p-5">{children}</div>
+    </div>
+  );
+}
+
+function TaskCard({ task, isSelected, onClick }: { task: any; isSelected: boolean; onClick: () => void }) {
+  return (
+    <div 
+      className={`rounded-xl border p-3 cursor-pointer transition-all ${
+        isSelected 
+          ? "border-emerald-500 bg-emerald-500/10" 
+          : "border-slate-800 bg-[#0b1220] hover:border-slate-600"
+      }`}
+      onClick={onClick}
+    >
+      <div className="text-sm font-medium">{task.title}</div>
+      <div className={`mt-1 text-xs ${
+        isSelected ? "text-emerald-300" : "text-slate-400"
+      }`}>
+        ETA: {task.eta}
+      </div>
+      {task.assignee && (
+        <div className={`mt-1 text-xs ${
+          isSelected ? "text-emerald-200" : "text-emerald-400"
+        }`}>
+          Assignee: {task.assignee}
+        </div>
+      )}
     </div>
   );
 }
@@ -102,6 +131,7 @@ const initialTasks: Task[] = [
 
 // ----- Page Sprint -----
 export default function SprintPage() {
+  const router = useRouter();
   const [progress, setProgress] = useState(78);
   const [members] = useState<Member[]>(initialMembers);
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
@@ -109,6 +139,7 @@ export default function SprintPage() {
   const [mission, setMission] = useState<string | null>(
     "Implement a secure payment integration with refund flows & retries."
   );
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const columns = useMemo(
     () => ({
@@ -123,13 +154,24 @@ export default function SprintPage() {
     setShowStartModal(true);
   }
 
+  function handleTaskClick(task: Task) {
+    setSelectedTask(task);
+    setShowStartModal(true);
+  }
+
   function confirmStart() {
-    // Simule un appel backend pour démarrer le sprint
+    if (!selectedTask) {
+      setSelectedTask(initialTasks[0]);
+    }
+    
     setMission(
       "Sprint started: Build RESTful payment endpoints with idempotency keys, webhook retries and secure refund policy."
     );
     setProgress(80);
     setShowStartModal(false);
+    
+    // Redirect to coding page
+    router.push(`/sprint/sprinting?sprintId=sprint-123&taskId=${selectedTask?.id || initialTasks[0].id}`);
   }
 
   return (
@@ -187,10 +229,12 @@ export default function SprintPage() {
                 <div className="mb-3 text-sm font-semibold text-sky-300">To Do</div>
                 <div className="space-y-3">
                   {columns.todo.map((t) => (
-                    <div key={t.id} className="rounded-xl border border-slate-800 bg-[#0b1220] p-3">
-                      <div className="text-sm font-medium">{t.title}</div>
-                      <div className="mt-1 text-xs text-slate-400">ETA: {t.eta}</div>
-                    </div>
+                    <TaskCard
+                      key={t.id}
+                      task={t}
+                      isSelected={selectedTask?.id === t.id}
+                      onClick={() => handleTaskClick(t)}
+                    />
                   ))}
                 </div>
               </div>
@@ -200,10 +244,12 @@ export default function SprintPage() {
                 <div className="mb-3 text-sm font-semibold text-emerald-300">In Progress</div>
                 <div className="space-y-3">
                   {columns.doing.map((t) => (
-                    <div key={t.id} className="rounded-xl border border-slate-800 bg-[#0b1220] p-3">
-                      <div className="text-sm font-medium">{t.title}</div>
-                      <div className="mt-1 text-xs text-emerald-400">Assignee: {t.assignee}</div>
-                    </div>
+                    <TaskCard
+                      key={t.id}
+                      task={t}
+                      isSelected={selectedTask?.id === t.id}
+                      onClick={() => handleTaskClick(t)}
+                    />
                   ))}
                 </div>
               </div>
@@ -213,10 +259,12 @@ export default function SprintPage() {
                 <div className="mb-3 text-sm font-semibold text-amber-300">In Review</div>
                 <div className="space-y-3">
                   {columns.review.map((t) => (
-                    <div key={t.id} className="rounded-xl border border-slate-800 bg-[#0b1220] p-3">
-                      <div className="text-sm font-medium">{t.title}</div>
-                      <div className="mt-1 text-xs text-amber-400">Assignee: {t.assignee}</div>
-                    </div>
+                    <TaskCard
+                      key={t.id}
+                      task={t}
+                      isSelected={selectedTask?.id === t.id}
+                      onClick={() => handleTaskClick(t)}
+                    />
                   ))}
                 </div>
               </div>
@@ -308,15 +356,32 @@ export default function SprintPage() {
         onClose={() => setShowStartModal(false)}
         title="Start Sprint — Double-Blind Mode"
         onConfirm={confirmStart}
-        confirmText="Start Now"
+        confirmText="Start Coding"
       >
-        <div className="space-y-3 text-sm text-slate-300">
+        <div className="space-y-4 text-sm text-slate-300">
+          {selectedTask && (
+            <div className="p-3 bg-slate-800/50 rounded-lg">
+              <h4 className="font-semibold text-slate-200">Selected Task:</h4>
+              <p className="mt-1">{selectedTask.title}</p>
+              {selectedTask.eta && (
+                <p className="text-xs text-slate-400 mt-1">Estimated: {selectedTask.eta}</p>
+              )}
+            </div>
+          )}
+          
           <p>Each participant will receive a randomized codename for this sprint.</p>
           <ul className="list-disc pl-5 space-y-1 text-slate-300/90">
             <li>No identity reveal until final scoring</li>
             <li>Mentor feedback will be tracked to codenames</li>
             <li>AI scoring will analyze: code quality, tests, collaboration</li>
+            <li>Real-time code tracking and metrics</li>
           </ul>
+          
+          <div className="pt-2 border-t border-slate-700">
+            <p className="text-xs text-slate-400">
+              You can change tasks by clicking on different cards before starting.
+            </p>
+          </div>
         </div>
       </Modal>
     </div>
