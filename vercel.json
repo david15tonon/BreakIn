@@ -14,10 +14,21 @@
   "framework": "nextjs",
   "regions": ["iad1"],
   "installCommand": "cd Frontend && npm ci --prefer-offline --no-audit --progress=false",
-  "cache": [
-    "~/npm/_logs",
-    "~/npm/_cacache",
-    "~/npm/_preloads",
-    "~/npm/_npx"
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://breakin-r2eq.onrender.com",
+    "NEXT_PUBLIC_SITE_URL": "https://breakin.vercel.app",
+    "NODE_ENV": "production"
+  },
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_API_URL": "https://breakin-r2eq.onrender.com",
+      "NEXT_PUBLIC_SITE_URL": "https://breakin.vercel.app"
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/cron",
+      "schedule": "0 */12 * * *"
+    }
   ]
 }
