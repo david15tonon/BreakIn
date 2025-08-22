@@ -1,2 +1,23 @@
-# Ne rien ignorer - tout est nécessaire pour le build
-# Ce fichier est vide intentionnellement pour s'assurer que tous les fichiers sont inclus
+# Ignorer les fichiers inutiles
+node_modules
+.next
+.git
+.gitignore
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignorer les fichiers pnpm
+pnpm-lock.yaml
+pnpm-workspace.yaml
+
+# Ignorer les fichiers de configuration locaux
+.vscode/
+.idea/
+*.log
+
+# Ignorer les dossiers de build
+out/
+dist/
+build/

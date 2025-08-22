@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 # Configuration MongoDB
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+MONGO_URI = os.getenv("MONGO_URI", "MONGO_URI")
 DB_NAME = os.getenv("DB_NAME", "breakin")
 
 # Configuration de connexion avec options de production
@@ -63,7 +63,7 @@ def connect_to_mongodb():
 
 
 def get_database() -> Database:
-    MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+    MONGO_URI = os.getenv("MONGO_URI", "MONGO_URI")
     DB_NAME = os.getenv("DB_NAME", "breakin")
     client = MongoClient(MONGO_URI)
     return client[DB_NAME]
