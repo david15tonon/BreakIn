@@ -233,7 +233,7 @@ export default function DeveloperDashboard() {
                       }
                     } catch (error) {
                       console.error('❌ Manual sync failed:', error)
-                      alert('❌ Sync failed: ' + error.message)
+                      alert('❌ Sync failed: ' + (error as Error).message)
                     }
                   }}
                 >
