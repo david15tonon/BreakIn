@@ -1,0 +1,32 @@
+"""Authentication and security constants."""
+
+# JWT Configuration
+JWT_ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+REFRESH_TOKEN_EXPIRE_DAYS = 30
+
+# Password Policy
+MIN_PASSWORD_LENGTH = 8
+REQUIRE_UPPERCASE = True
+REQUIRE_LOWERCASE = True
+REQUIRE_NUMBERS = True
+REQUIRE_SPECIAL_CHARS = True
+PASSWORD_SPECIAL_CHARS = "!@#$%^&*()_+-=[]{}|;:,.<>?"
+
+# Rate Limiting
+MAX_LOGIN_ATTEMPTS = 5
+LOGIN_COOLDOWN_MINUTES = 15
+PASSWORD_RESET_TOKEN_EXPIRE_MINUTES = 30
+
+# MFA Configuration
+MFA_CODE_LENGTH = 6
+MFA_CODE_EXPIRE_MINUTES = 10
+TOTP_ISSUER = "BreakIn"
+
+# Session Configuration
+SESSION_COOKIE_NAME = "breakin_session"
+SESSION_EXPIRE_DAYS = 30
+REMEMBER_ME_DAYS = 90
+
+# OAuth Providers
+SUPPORTED_OAUTH_PROVIDERS = ["github", "google"]
