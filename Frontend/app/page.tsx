@@ -62,7 +62,7 @@ export default function HomePage() {
               >
                 <Link href="/auth/signin">Sign In</Link>
               </Button>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white"><a href="/sprint">Get Started</a></Button>
             </div>
           </div>
         </div>

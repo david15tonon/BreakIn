@@ -20,3 +20,4 @@ email-validator==2.2.0
 httpx 
 openai 
 python-dotenv
+requests

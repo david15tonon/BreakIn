@@ -3,9 +3,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
-from app.routes import auth, sprint, feedback,evaluation  # Ajoutez evaluation
+from app.routes import auth, sprint, feedback, evaluation   # Ajoutez evaluation
 
-from app.routes.auth import router as auth_router
 
 app = FastAPI(title="BreakIn Backend", version="1.0")
 
