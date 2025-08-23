@@ -179,6 +179,10 @@ async def get_evaluation(sprint_id: str, user_id: str):
     
     return evaluation
 
+@router.post("/sprint/{sprint_id}/evaluate")
+async def evaluate_sprint_endpoint(sprint_id: str, team_metrics: Dict[str, Any]):
+    """Endpoint pour évaluer un sprint avec des métriques d'équipe"""
+    try:
         from app.models.evaluation import TeamEvaluationRequest
         request_data = TeamEvaluationRequest(**team_metrics)
         

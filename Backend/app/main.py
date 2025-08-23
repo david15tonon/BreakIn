@@ -5,13 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from app.routes import auth, sprint, feedback,evaluation  # Ajoutez evaluation
 
-from app.routes.auth import router as auth_router
-
-### for gpt5-evaluator
-from app.evaluator import evaluate_team_llm
-from app.sample_data import example_team  # optional test data
-
-##$$#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 app = FastAPI(title="BreakIn Backend", version="1.0")
 
@@ -39,21 +32,6 @@ app.include_router(evaluation.router, prefix="/evaluation", tags=["Evaluation"])
 def root():
     return {"message": "Backend BreakIn API running 🚀"}
 
-
-###******************************************************************************
-@app.get("/gpt5")
-def root():
-    return {"message": "Welcome to AI Team Evaluator API"}
-
-@app.post("/evaluate")
-def evaluate_team(team_data: dict):
-    """Accept JSON input and return LLM evaluation."""
-    return evaluate_team_llm(team_data)
-
-@app.get("/test")
-def test_eval():
-    return evaluate_team_llm(example_team)
-#######**************************************************************************8
 
 #test for logging
 from pydantic import BaseModel, EmailStr
