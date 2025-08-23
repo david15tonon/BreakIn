@@ -4,7 +4,7 @@ from app.models.evaluation import TeamEvaluationRequest, TeamEvaluationResponse
 
 class AIEvaluator:
     def __init__(self):
-        self.api_url = os.getenv("AI_EVALUATION_URL", "https://localhost:8000/evaluate")
+        self.api_url = os.getenv("AI_EVALUATION_URL", "https://api.breakin.ai/evaluate")
         self.api_key = os.getenv("AI_API_KEY", "your-ai-api-key")
     
     async def evaluate_team_performance(self, request: TeamEvaluationRequest) -> TeamEvaluationResponse:
