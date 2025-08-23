@@ -3,7 +3,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
-from app.routes import auth, sprint, feedback
+from app.routes import auth, sprint, feedback,evaluation  # Ajoutez evaluation
+
 from app.routes.auth import router as auth_router
 
 ### for gpt5-evaluator
@@ -32,6 +33,7 @@ app.add_middleware(
 app.include_router(auth.router, prefix="/auth", tags=["Auth"])
 app.include_router(sprint.router, prefix="/sprint", tags=["Sprint"])
 app.include_router(feedback.router, prefix="/feedback", tags=["Feedback"])
+app.include_router(evaluation.router, prefix="/evaluation", tags=["Evaluation"])
 
 @app.get("/")
 def root():
