@@ -6,3 +6,5 @@ encode_password.py
 pyrightconfig.json
 *.pyc
 node_modules/@next/swc-win32-x64-msvc/next-swc.win32-x64-msvc.node
+__pycache__/
+*.pyc
